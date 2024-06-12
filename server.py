@@ -1,39 +1,38 @@
-import ctypes
 import socket
-import os
+import handleC
 
-# from pathlib import Path
-if os.name == "posix":
-    path = './clibrary.so'
-elif os.name == 'nt':
-    path = './clibrary.dll'
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 12345  # Port to listen on (non-privileged ports are > 1023)
 
-clibrary = ctypes.CDLL(str(path))
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    print(f"Listening to port {PORT}")
+    conn, addr = s.accept()
 
-def start_server():
-    clibrary.display()
+    try:
+        with conn:
+            print(f"Connected by {addr}")
+            while True:
+                # receber os dados
+                # caso seja vazia, então acabou o programa
+                data = conn.recv(1024)
+                if not data:
+                    break
 
-    # Cria um objeto socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                # decodificar os dados recebidos para utf-8
+                # transformar em uma lista
+                string = data.decode("utf-8")
+                output = handleC.run_c_program(string)
+                print(output)
 
-    # Definição do host e porta
-    host = '127.0.0.1'
-    port = 31415
+                # pular a string vazia (que possui apenas um '\n')
+                conn.recv(1024)
+                
+                # Send the response back to the client
+                conn.sendall(output.encode("utf-8"))
+    except Exception as e:
+        print(f"Exception occurred: {e}")
+    finally:
+        s.close()
 
-    # Busca por conexões
-    server_socket.listen()
-    print("Servidor está aguardando conexões...")
-
-    # Conexão encontrada
-    conn, addr = server_socket.accept()
-    with conn:
-        print(f"Conectado por {addr}")
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            print(f"Recebido: {data.decode()}")
-            conn.sendall(data)
-
-if __name__ == "__main__":
-    start_server()
