@@ -2,7 +2,7 @@ import socket
 import handleC
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-PORT = 12345  # Port to listen on (non-privileged ports are > 1023)
+PORT = 11111  # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
@@ -33,6 +33,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 conn.sendall(output.encode("utf-8"))
     except Exception as e:
         print(f"Exception occurred: {e}")
+        s.close()
     finally:
         s.close()
 

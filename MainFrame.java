@@ -14,20 +14,28 @@ public class MainFrame extends JFrame {
     // private PlayerManager playerManager;
     private String file;
     private Socket client;
+    private Font defaultFont;
 
     public MainFrame() {
         initClient();
 
+        // Definir a fonte padrão maior
+        defaultFont = new Font("Arial", Font.PLAIN, 18);
+
         setTitle("Player Management");
-        setSize(600, 400);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setFont(defaultFont);
 
         JMenu fileMenu = new JMenu("File");
+        fileMenu.setFont(defaultFont);
+
         String[] fifaYears = { "2017", "2018", "2019", "2020", "2021", "2022", "2023" };
         for (String year : fifaYears) {
             JMenuItem menuItem = new JMenuItem("FIFA " + year);
+            menuItem.setFont(defaultFont);
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -40,7 +48,9 @@ public class MainFrame extends JFrame {
         }
 
         JMenu listMenu = new JMenu("List");
+        listMenu.setFont(defaultFont);
         JMenuItem listMenuItem = new JMenuItem("List All Players");
+        listMenuItem.setFont(defaultFont);
         listMenuItem.addActionListener(new ActionListener() {
 
             @Override
@@ -89,7 +99,7 @@ public class MainFrame extends JFrame {
 
     private void initClient() {
         try {
-            client = new Socket("127.0.0.1", 12345);
+            client = new Socket("127.0.0.1", 11111);
         } catch (IOException ex) {
             Logger.getLogger(FClient.class.getName()).log(Level.SEVERE, null, ex);
         }

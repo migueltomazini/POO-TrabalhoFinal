@@ -133,6 +133,7 @@ JOGADOR *ler_struct(FILE *f, JOGADOR *atual) {
 Função para printar o registro, dado uma struct do registro atual
 */
 void printar_registro(JOGADOR *atual) {
+    printf("%d/%d/", atual->id, atual->idade);
     if (atual->tamNomeJog)
         printf("%s/", atual->nomeJogador);
     else

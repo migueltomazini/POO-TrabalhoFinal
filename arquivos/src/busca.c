@@ -209,7 +209,7 @@ void WHERE(char *nomeArquivoBinario) {
         JOGADOR *atual;  // ponteiro que vai armazenar dados do registro atual
         int qtdRes = 0;
 
-        printf("Busca %d\n", i);
+        // printf("Busca %d\n", i);
 
         // como o cabecalho foi lido o ponteiro está no 1o registro já
         // caso existam registros, começar a ler. 

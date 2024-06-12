@@ -1,5 +1,3 @@
-// Diálogo para exibir e editar dados do jogador.
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,63 +5,107 @@ import java.awt.event.ActionListener;
 
 public class PlayerDialog extends JDialog {
     private Player player;
-    // private PlayerManager playerManager;
-    private JTextField idField, ageField, nameField, nationalityField, clubField;
+    private JTextField ageField, nameField, nationalityField, clubField;
+    private Font defaultFont;
+    private Dimension textFieldSize = new Dimension(400, 30);
 
-    public PlayerDialog(Frame owner, Player player) {
+    public PlayerDialog(Frame owner, Player player, Font defaultFont) {
         super(owner, "Player Details", true);
         this.player = player;
-        // this.playerManager = playerManager;
-        setLayout(new GridLayout(6, 2));
+        this.defaultFont = defaultFont;
+        setLayout(new GridBagLayout());
 
-        add(new JLabel("ID:"));
-        idField = new JTextField(String.valueOf(player.getId()));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(createLabel("ID:"), gbc);
+
+        gbc.gridx = 1;
+        JTextField idField = createTextField(String.valueOf(player.getId()));
         idField.setEditable(false);
-        add(idField);
+        add(idField, gbc);
 
-        add(new JLabel("Age:"));
-        ageField = new JTextField(String.valueOf(player.getAge()));
-        add(ageField);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(createLabel("Age:"), gbc);
 
-        add(new JLabel("Name:"));
-        nameField = new JTextField(player.getName());
-        add(nameField);
+        gbc.gridx = 1;
+        ageField = createTextField(String.valueOf(player.getAge()));
+        add(ageField, gbc);
 
-        add(new JLabel("Nationality:"));
-        nationalityField = new JTextField(player.getNationality());
-        add(nationalityField);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(createLabel("Name:"), gbc);
 
-        add(new JLabel("Club:"));
-        clubField = new JTextField(player.getClub());
-        add(clubField);
+        gbc.gridx = 1;
+        nameField = createTextField(player.getName());
+        add(nameField, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        add(createLabel("Nationality:"), gbc);
+
+        gbc.gridx = 1;
+        nationalityField = createTextField(player.getNationality());
+        add(nationalityField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        add(createLabel("Club:"), gbc);
+
+        gbc.gridx = 1;
+        clubField = createTextField(player.getClub());
+        add(clubField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.CENTER;
+
+        JPanel buttonPanel = new JPanel();
         JButton saveButton = new JButton("Save");
+        saveButton.setFont(defaultFont);
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                savePlayer(); 
+                savePlayer();
             }
         });
-        add(saveButton);
+        buttonPanel.add(saveButton);
 
         JButton deleteButton = new JButton("Delete");
+        deleteButton.setFont(defaultFont);
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deletePlayer();
             }
         });
-        add(deleteButton);
+        buttonPanel.add(deleteButton);
 
-        setSize(300, 200);
+        add(buttonPanel, gbc);
+
+        setSize(800, 600);
         setLocationRelativeTo(owner);
     }
 
-    private void savePlayer() {
-        // possuir o id do jogador
-        // remover o id do arquivo
-        // adicionar os valores
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(defaultFont);
+        return label;
+    }
 
+    private JTextField createTextField(String text) {
+        JTextField textField = new JTextField(text);
+        textField.setFont(defaultFont);
+        textField.setPreferredSize(textFieldSize);
+        return textField;
+    }
+
+    private void savePlayer() {
         int age = Integer.parseInt(ageField.getText());
         String name = nameField.getText();
         String nationality = nationalityField.getText();
@@ -74,14 +116,16 @@ public class PlayerDialog extends JDialog {
         player.setNationality(nationality);
         player.setClub(club);
 
-        // playerManager.updatePlayer(player);
+        // update
+        int id = player.getId();
+        // remover o jogador com o id
+        // adicionar o jogador novo
         dispose();
     }
 
     private void deletePlayer() {
-        // chamar função para deletar
-
-        // playerManager.deletePlayer(player.getId());
+        // remover o jogador
+        int id = player.getId();
         dispose();
     }
 }
