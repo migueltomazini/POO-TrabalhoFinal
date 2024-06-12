@@ -13,7 +13,7 @@ import subprocess
 def run_c_program(input_data):
     # Run the C program as a subprocess
     process = subprocess.Popen(
-        "./arquivos/bin/programaTrab",  # Adjust the path to your compiled C program
+        "../arquivos/bin/programaTrab",  # Adjust the path to your compiled C program
         stdin=subprocess.PIPE,  # Set stdin to a pipe to communicate with the process
         stdout=subprocess.PIPE,  # Capture the output of the process
         stderr=subprocess.PIPE,  # Capture any error messages
@@ -31,11 +31,11 @@ def run_c_program(input_data):
 
 
 # Example usage
-input_data = """
-3 binario6.bin 3
-2 nomeClube "INTER" nacionalidade "ITALY"
-2 idade 22 nacionalidade "FRANCE"
-3 idade 27 nacionalidade "GERMANY" nomeClube "FC BAYERN MUNCHEN"
-"""
+# input_data = """
+# 3 binario6.bin 3
+# 2 nomeClube "INTER" nacionalidade "ITALY"
+# 2 idade 22 nacionalidade "FRANCE"
+# 3 idade 27 nacionalidade "GERMANY" nomeClube "FC BAYERN MUNCHEN"
+# """
 # output_data = run_c_program(input_data)
 # print(output_data)
