@@ -141,7 +141,7 @@ public class SearchPanel extends JPanel {
                 listModel.addElement(player);
             }
         } catch (IOException ex) {
-            Logger.getLogger(FClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

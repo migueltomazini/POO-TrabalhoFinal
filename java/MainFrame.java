@@ -74,7 +74,7 @@ public class MainFrame extends JFrame {
                         }
                         JOptionPane.showMessageDialog(null, new JScrollPane(new JTextArea(allPlayers, 20, 40)));
                     } catch (IOException ex) {
-                        Logger.getLogger(FClient.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "No file loaded.");
@@ -101,7 +101,7 @@ public class MainFrame extends JFrame {
         try {
             client = new Socket("127.0.0.1", 11111);
         } catch (IOException ex) {
-            Logger.getLogger(FClient.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
