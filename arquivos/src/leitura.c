@@ -205,6 +205,8 @@ void SELECT(char *nomeArquivoBinario) {
         printf("Registro inexistente.\n\n");
     }
 
+    printf("\n");
+
     free(cab);
     fclose(fbin);
 }
