@@ -154,6 +154,6 @@ public class SearchPanel extends JPanel {
         PlayerDialog dialog = new PlayerDialog((Frame) SwingUtilities.getWindowAncestor(this), player, defaultFont,
                 fileToEdit, client);
         dialog.setVisible(true);
-        listModel.clear();
+        searchPlayers();
     }
 }

@@ -133,13 +133,10 @@ public class PlayerDialog extends JDialog {
             // update
             // remover o jogador com o id
             int id = player.getId();
-            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id;
-            out.println(query);
-            out.flush();
-
+            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id + " /";
             // adicionar o jogador novo
-            query = "6 " + fileToEdit + " index.bin 1\n" + id + " " + age + " \"" + name + "\" \"" + nationality
-                    + "\" \"" + club + "\"";
+            query += "6 " + fileToEdit + " index.bin 1\n" + id + " " + age + " \"" + name + "\" \"" + nationality
+                    + "\" \"" + club + "\" ";
             out.println(query);
             out.flush();
         } catch (IOException ex) {
@@ -155,7 +152,7 @@ public class PlayerDialog extends JDialog {
 
             // remover o jogador com o id
             int id = player.getId();
-            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id;
+            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id + " ";
             out.println(query);
         } catch (IOException ex) {
             Logger.getLogger(SearchPanel.class.getName()).log(Level.SEVERE, null, ex);

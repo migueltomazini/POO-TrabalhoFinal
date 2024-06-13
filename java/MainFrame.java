@@ -38,7 +38,7 @@ public class MainFrame extends JFrame {
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    file = "fifa" + year + ".bin";
+                    file = "fifa" + year + ".bin ";
                     try {
                         PrintStream out = new PrintStream(client.getOutputStream());
 
@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
 
     private void initClient() {
         try {
-            client = new Socket("127.0.0.1", 11111);
+            client = new Socket("127.0.0.1", 12345);
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
