@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
 
     private void initClient() {
         try {
-            client = new Socket("127.0.0.1", 12345);
+            client = new Socket("127.0.0.1", 65432);
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

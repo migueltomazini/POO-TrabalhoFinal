@@ -309,6 +309,7 @@ void INSERT_INTO(char *nomeArquivoBinario, char *nomeArquivoIndice) {
 
     // reescrever o arquivo de índice com os dados atualizados
     status = '1';
+    // printar_lista(reg);
     escrever_arquivo_indice(findex, reg, status);
 
     // desalocar a lista, o cabeçalho

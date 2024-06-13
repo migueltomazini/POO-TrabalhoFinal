@@ -87,7 +87,11 @@ ITEM **cria_array(FILE *f, int nroRegArq) {
     ITEM *item;
     while (item = ler_linha_indice(f)) {
         array[++ct] = item;
+        // printf("%d %ld\n", item->id, item->byteoffset);
     }
+    // for (int i = 0; i < ct; i++) {
+    //     printf("%d %ld\n", array[i]->id, array[i]->byteoffset);
+    // }
     return array;
 }
 
@@ -229,9 +233,10 @@ int CREATE_INDEX(char *nomeArquivoBinario, char *nomeArquivoIndice) {
             // manualmente, assim tamReg é o tamanho que de fato eu utilizei para o registro atual
             // e tamanhoRegistro é o espaço que ele está ocupando (devido a reutilização de espaço por exemplo)
             // devemos pular a diferença desses tamanhos em relação ao local apontado atualmente
-            int tamReg = 33 + atual->tamNacionalidade + atual->tamNomeClube + atual->tamNomeJog;
-            if (atual->tamanhoRegistro != tamReg)
-                fseek(fbin, atual->tamanhoRegistro - tamReg, SEEK_CUR);
+            
+            // int tamReg = 33 + atual->tamNacionalidade + atual->tamNomeClube + atual->tamNomeJog;
+            // if (atual->tamanhoRegistro != tamReg)
+            //     fseek(fbin, atual->tamanhoRegistro - tamReg, SEEK_CUR);
 
             desalocar_struct(&atual);
         }

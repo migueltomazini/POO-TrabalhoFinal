@@ -133,9 +133,9 @@ public class PlayerDialog extends JDialog {
             // update
             // remover o jogador com o id
             int id = player.getId();
-            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id + " /";
+            String query = "5 " + fileToEdit + "index.bin 1\n" + "1 id " + id + "/";
             // adicionar o jogador novo
-            query += "6 " + fileToEdit + " index.bin 1\n" + id + " " + age + " \"" + name + "\" \"" + nationality
+            query += "6 " + fileToEdit + "index.bin 1\n" + id + " " + age + " \"" + name + "\" \"" + nationality
                     + "\" \"" + club + "\" ";
             out.println(query);
             out.flush();

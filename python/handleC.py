@@ -9,7 +9,6 @@
 
 import subprocess
 
-
 def run_c_program(input_data):
     # Run the C program as a subprocess
     process = subprocess.Popen(
