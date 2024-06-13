@@ -321,6 +321,8 @@ void INSERT_INTO(char *nomeArquivoBinario, char *nomeArquivoIndice) {
 
     // caso tenha chegado até o final, então posso printar os binários
     // do arquivo de dados e do arquivo de índices
-    binarioNaTela(nomeArquivoBinario);
-    binarioNaTela(nomeArquivoIndice);
+    
+    // COMENTANDO AQUI POR CAUSA DO TRABALHO DE POO
+    // binarioNaTela(nomeArquivoBinario);
+    // binarioNaTela(nomeArquivoIndice);
 }

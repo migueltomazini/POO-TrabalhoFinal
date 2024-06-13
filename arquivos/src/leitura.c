@@ -126,6 +126,10 @@ JOGADOR *ler_struct(FILE *f, JOGADOR *atual) {
         (atual->nomeClube)[atual->tamNomeClube] = '\0';
     }
 
+    int tamanhoComparacao = 33 + atual->tamNacionalidade + atual->tamNomeClube + atual->tamNomeJog;
+    if (tamanhoComparacao != atual->tamanhoRegistro)
+        fseek(f, atual->tamanhoRegistro - tamanhoComparacao, SEEK_CUR);
+
     return atual;
 }
 
@@ -142,10 +146,10 @@ void printar_registro(JOGADOR *atual) {
     if (atual->tamNacionalidade)
         printf("%s/", atual->nacionalidade);
     else
-        printf("null\n");
+        printf("null/");
 
     if (atual->tamNomeClube)
-        printf("%s/", atual->nomeClube);
+        printf("%s", atual->nomeClube);
     else
         printf("null");
     printf("\n");

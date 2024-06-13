@@ -1,4 +1,5 @@
 import socket
+import shutil
 import handleC
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
@@ -21,19 +22,18 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     break
 
                 # decodificar os dados recebidos para utf-8
-                # transformar em uma lista
                 string = data.decode("utf-8")
-                output = handleC.run_c_program(string)
-                print(output)
-
-                # pular a string vazia (que possui apenas um '\n')
-                conn.recv(1024)
                 
-                # Send the response back to the client
-                conn.sendall(output.encode("utf-8"))
+                if (string.split(" ")[0] == "Carregar:"):
+                    orig = "./arquivos/" + string.split(" ")[1]
+                    dest = "./" + string.split(" ")[1]
+                    shutil.copyfile(orig, dest)
+                else:
+                    output = handleC.run_c_program(string)
+                    if output:
+                        conn.sendall(output.encode("utf-8"))
     except Exception as e:
         print(f"Exception occurred: {e}")
         s.close()
     finally:
         s.close()
-

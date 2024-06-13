@@ -1,5 +1,3 @@
-// Painel de busca para procurar jogadores.
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SearchPanel extends JPanel {
-    // private PlayerManager playerManager;
     private JTextField idField, ageField, nameField, nationalityField, clubField;
     private JList<Player> resultList;
     private DefaultListModel<Player> listModel;
@@ -26,30 +23,44 @@ public class SearchPanel extends JPanel {
 
         client = clientReceived;
         fileToEdit = file;
-        // this.playerManager = playerManager;
         setLayout(new BorderLayout());
 
         JPanel inputPanel = new JPanel(new GridLayout(6, 2));
         inputPanel.setFont(defaultFont);
-        
-        inputPanel.add(new JLabel("ID:"));
+
+        JLabel idLabel = new JLabel("ID:");
+        idLabel.setFont(defaultFont);
+        inputPanel.add(idLabel);
         idField = new JTextField();
+        idField.setFont(defaultFont);
         inputPanel.add(idField);
 
-        inputPanel.add(new JLabel("Age:"));
+        JLabel ageLabel = new JLabel("Age:");
+        ageLabel.setFont(defaultFont);
+        inputPanel.add(ageLabel);
         ageField = new JTextField();
+        ageField.setFont(defaultFont);
         inputPanel.add(ageField);
 
-        inputPanel.add(new JLabel("Name:"));
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setFont(defaultFont);
+        inputPanel.add(nameLabel);
         nameField = new JTextField();
+        nameField.setFont(defaultFont);
         inputPanel.add(nameField);
 
-        inputPanel.add(new JLabel("Nationality:"));
+        JLabel nationalityLabel = new JLabel("Nationality:");
+        nationalityLabel.setFont(defaultFont);
+        inputPanel.add(nationalityLabel);
         nationalityField = new JTextField();
+        nationalityField.setFont(defaultFont);
         inputPanel.add(nationalityField);
 
-        inputPanel.add(new JLabel("Club:"));
+        JLabel clubLabel = new JLabel("Club:");
+        clubLabel.setFont(defaultFont);
+        inputPanel.add(clubLabel);
         clubField = new JTextField();
+        clubField.setFont(defaultFont);
         inputPanel.add(clubField);
 
         JButton searchButton = new JButton("Search");
@@ -106,12 +117,7 @@ public class SearchPanel extends JPanel {
             if (!club.isEmpty())
                 ct++;
 
-            query += ct;
-
-            // 3 binario6.bin 3
-            // 2 nomeClube "INTER" nacionalidade "ITALY"
-            // 2 idade 22 nacionalidade "FRANCE"
-            // 3 idade 27 nacionalidade "GERMANY" nomeClube "FC BAYERN MUNCHEN"
+            query += ct + " ";
 
             if (id != -1)
                 query += "id " + id + " ";
@@ -130,7 +136,6 @@ public class SearchPanel extends JPanel {
             String response;
             while (!(response = in.readLine()).equals("")) {
                 System.out.println(response);
-                // tratar os dados do response pra criar um elemento da classe Player
                 String[] playerForm = response.split("/");
                 Player player = new Player(
                         Integer.parseInt(playerForm[0]),
@@ -146,9 +151,9 @@ public class SearchPanel extends JPanel {
     }
 
     private void showPlayerDialog(Player player) {
-        PlayerDialog dialog = new PlayerDialog((Frame) SwingUtilities.getWindowAncestor(this), player,
-                defaultFont);
+        PlayerDialog dialog = new PlayerDialog((Frame) SwingUtilities.getWindowAncestor(this), player, defaultFont,
+                fileToEdit, client);
         dialog.setVisible(true);
-        searchPlayers(); // Refresh the search results after the dialog is closed
+        listModel.clear();
     }
 }

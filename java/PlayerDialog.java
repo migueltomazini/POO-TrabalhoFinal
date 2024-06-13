@@ -2,15 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlayerDialog extends JDialog {
     private Player player;
     private JTextField ageField, nameField, nationalityField, clubField;
     private Font defaultFont;
     private Dimension textFieldSize = new Dimension(400, 30);
+    private String fileToEdit;
+    private Socket client;
 
-    public PlayerDialog(Frame owner, Player player, Font defaultFont) {
+    public PlayerDialog(Frame owner, Player player, Font defaultFont, String file, Socket clientReceived) {
         super(owner, "Player Details", true);
+
+        fileToEdit = file;
+        client = clientReceived;
+
         this.player = player;
         this.defaultFont = defaultFont;
         setLayout(new GridBagLayout());
@@ -116,16 +127,39 @@ public class PlayerDialog extends JDialog {
         player.setNationality(nationality);
         player.setClub(club);
 
-        // update
-        int id = player.getId();
-        // remover o jogador com o id
-        // adicionar o jogador novo
+        try {
+            PrintStream out = new PrintStream(client.getOutputStream());
+
+            // update
+            // remover o jogador com o id
+            int id = player.getId();
+            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id;
+            out.println(query);
+            out.flush();
+
+            // adicionar o jogador novo
+            query = "6 " + fileToEdit + " index.bin 1\n" + id + " " + age + " \"" + name + "\" \"" + nationality
+                    + "\" \"" + club + "\"";
+            out.println(query);
+            out.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(SearchPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }
 
     private void deletePlayer() {
         // remover o jogador
-        int id = player.getId();
+        try {
+            PrintStream out = new PrintStream(client.getOutputStream());
+
+            // remover o jogador com o id
+            int id = player.getId();
+            String query = "5 " + fileToEdit + " index.bin 1\n" + "1 id " + id;
+            out.println(query);
+        } catch (IOException ex) {
+            Logger.getLogger(SearchPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         dispose();
     }
 }

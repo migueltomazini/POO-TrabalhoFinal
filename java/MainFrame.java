@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainFrame extends JFrame {
-    // private PlayerManager playerManager;
     private String file;
     private Socket client;
     private Font defaultFont;
@@ -40,7 +39,17 @@ public class MainFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     file = "fifa" + year + ".bin";
-                    // playerManager = new PlayerManager(file);
+                    try {
+                        PrintStream out = new PrintStream(client.getOutputStream());
+
+                        String query = "Carregar: " + file;
+                        out.println(query);
+                    } catch (IOException ex) {
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception err) {
+                        JOptionPane.showMessageDialog(null, err);
+                    }
+
                     showSearchPanel();
                 }
             });
@@ -56,9 +65,6 @@ public class MainFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (file != null) {
-                    // chamar o socket para listar todos os registros de file
-                    // e passar para o showMessageDialog
-                    // MUDAR ESSA PARTE
                     String allPlayers = "";
                     try {
                         PrintStream out = new PrintStream(client.getOutputStream());
@@ -69,12 +75,27 @@ public class MainFrame extends JFrame {
 
                         String response;
                         while (!(response = in.readLine()).equals("")) {
+                            if (response.equals("Falha no processamento do arquivo."))
+                                throw new Exception("Please select another file");
                             System.out.println(response);
                             allPlayers += response + '\n';
                         }
-                        JOptionPane.showMessageDialog(null, new JScrollPane(new JTextArea(allPlayers, 20, 40)));
+
+                        JTextArea textArea = new JTextArea(allPlayers);
+                        textArea.setFont(defaultFont);
+                        textArea.setColumns(40);
+                        textArea.setRows(20);
+                        textArea.setLineWrap(true);
+                        textArea.setWrapStyleWord(true);
+                        JScrollPane scrollPane = new JScrollPane(textArea);
+                        scrollPane.setPreferredSize(new Dimension(800, 600));
+
+                        JOptionPane.showMessageDialog(null, scrollPane, "List of Players",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception err) {
+                        JOptionPane.showMessageDialog(null, err);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "No file loaded.");

@@ -28,8 +28,8 @@ struct item_ {
 };
 
 /*
-função para checar se o jogador que estamos olhando atualmente bate com os dados procurados 
-essa função será utilizada na remoção 
+função para checar se o jogador que estamos olhando atualmente bate com os dados procurados
+essa função será utilizada na remoção
 assim, caso o jogador esteja dentro dos critérios de remoção, ao final, iremos removê-lo
 vale ressaltar que só usamos essa função caso o ID  não seja um dos critérios de remoção
 */
@@ -47,9 +47,9 @@ int comparar_remover(JOGADOR *busca, JOGADOR *atual, FILE *fbin, CABECALHO *cab,
     if (busca->tamNomeClube != -1 && busca->nomeClube != NULL && atual->nomeClube != NULL)
         if (strcmp(busca->nomeClube, atual->nomeClube))
             return 0;
-        
+
     // achamos o jogador, mas nao temos o byteoffset dele, precisamos achar.
-    // para isso fazemos busca binaria no arquivo de indices, para achar o byteoffset 
+    // para isso fazemos busca binaria no arquivo de indices, para achar o byteoffset
     // do registro que estamos olhando
 
     ITEM *apagar = busca_indice(array, tamArray, atual->id);
@@ -62,29 +62,29 @@ int comparar_remover(JOGADOR *busca, JOGADOR *atual, FILE *fbin, CABECALHO *cab,
     // O byteoffset dele foi setado como -1 para que, na hora de inserir no arquivo
     // de índices, ele não considerar o item que foi removido.
     apagar->byteoffset = -1;
-    return 1; //para sinalizar que removemos o registro
+    return 1; // para sinalizar que removemos o registro
 }
 
 /*
-nessa função iremos remover o registro e adicioná-lo da devida forma 
-na pilha de reuso, mantendo essa de forma ordenada pelo tamanho para a inserção pelo best fit 
-tornar-se mais fácil 
+nessa função iremos remover o registro e adicioná-lo da devida forma
+na pilha de reuso, mantendo essa de forma ordenada pelo tamanho para a inserção pelo best fit
+tornar-se mais fácil
 */
 void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
     // fseek para o byteoffset do registro que será removido
     fseek(fbin, byteoffset, SEEK_SET);
-    
+
     // alocar memória e ler o registro que será removido no arquivo de dados
     JOGADOR *registroRemover = (JOGADOR *)malloc(sizeof(JOGADOR));
     ler_struct(fbin, registroRemover);
-    
-    //marcar como removido
+
+    // marcar como removido
     registroRemover->removido = '1';
 
     // pegar o tamanho do registro que será removido
     int tamReg = registroRemover->tamanhoRegistro;
     // pegar o byteoffset do primeiro elemento da pilha de removidos
-    // iremos percorrer a pilha para acharmos a posição que o novo removido 
+    // iremos percorrer a pilha para acharmos a posição que o novo removido
     // será adicionado
     long int topo = cab->topo;
 
@@ -92,11 +92,11 @@ void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
         // para o primeiro removido, basta setar o byteoffset do topo para
         // o byteoffset do novo registro removido e também setar o "Prox" do
         // registro removido como -1
-        
+
         cab->topo = byteoffset;
         registroRemover->Prox = -1;
     } else {
-        // se não for o primeiro removido, então devemos comparar os 
+        // se não for o primeiro removido, então devemos comparar os
         // registros e encontrar a posição correta do registro na lista encadeada
 
         // pegar o primeiro elemento removido (topo)
@@ -129,7 +129,7 @@ void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
                     fseek(fbin, byteoffset_atual, SEEK_SET);
                     escrever_binario(fbin, atual);
 
-                    // nao tem nenhum removido depois de mim 
+                    // nao tem nenhum removido depois de mim
                     registroRemover->Prox = -1;
 
                     // desalocar o espaço de memória para evitar memory leak
@@ -145,14 +145,14 @@ void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
                 JOGADOR *next = (JOGADOR *)malloc(sizeof(JOGADOR));
                 ler_struct(fbin, next);
 
-                // Com o próximo registro removido, basta compará-lo com o tamanho do 
+                // Com o próximo registro removido, basta compará-lo com o tamanho do
                 // registro a ser removido.
-                // se o tamanho do que eu vou remover está entre o tamanho do atual e do proximo 
+                // se o tamanho do que eu vou remover está entre o tamanho do atual e do proximo
                 // devo inserir o meu entre esses registros
                 if (atual->tamanhoRegistro < tamReg && next->tamanhoRegistro >= tamReg) {
-                    //proximo do registro que estou removendo é o proximo do atual 
+                    // proximo do registro que estou removendo é o proximo do atual
                     registroRemover->Prox = atual->Prox;
-                    //proximo do meu atual sou eu 
+                    // proximo do meu atual sou eu
                     atual->Prox = byteoffset;
                     fseek(fbin, byteoffset_atual, SEEK_SET);
                     escrever_binario(fbin, atual);
@@ -171,8 +171,8 @@ void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
         }
     }
 
-    // reescrevendo o registro removido no arquivo de dados 
-    // com os dados atualizados 
+    // reescrevendo o registro removido no arquivo de dados
+    // com os dados atualizados
     fseek(fbin, byteoffset, SEEK_SET);
     escrever_binario(fbin, registroRemover);
 
@@ -180,9 +180,9 @@ void remover_registro(FILE *fbin, long int byteoffset, CABECALHO *cab) {
 }
 
 /*
-Essa é a função principal desse arquivo, onde usaremos as demais funções implementadas 
+Essa é a função principal desse arquivo, onde usaremos as demais funções implementadas
 nessa iremos abrir tanto o arquivo de dados quanto o binário e criar o arquivo de indices para efetuar remoções de registros
-assim iremos fazer todas as operações necessárias para ao final o arquivo de indices estar gravado 
+assim iremos fazer todas as operações necessárias para ao final o arquivo de indices estar gravado
 corretamente (sem removidos) e o arquivo de dados também, com a pilha de removidos ordenada
 */
 
@@ -260,9 +260,9 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
     for (int i = 1; i <= q; i++) {
 
         int n;
-        scanf("%d ", &n); //iremos buscar por n campos 
+        scanf("%d ", &n); // iremos buscar por n campos
         inicializar_null(busca);
-        
+
         for (int j = 1; j <= n; j++) {
             ler_criterio(busca);
         }
@@ -272,8 +272,8 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
         // como o cabecalho foi lido o ponteiro está no 1o registro já
         // caso existam registros, começar a ler.
         if (cab->nroRegArq) {
-            //se um dos criterios de busca é o ID, só iremos remover um registro 
-            if (busca->id != -1) { 
+            // se um dos criterios de busca é o ID, só iremos remover um registro
+            if (busca->id != -1) {
                 ITEM *apagar = busca_indice(array, tamArray, busca->id);
                 if (apagar != NULL) {
                     remover_registro(fbin, apagar->byteoffset, cab);
@@ -285,7 +285,7 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
             } else {
                 int qtdRem = 0;
                 while (atual = ler_linha_bin(fbin)) {
-                    // se o atual não foi removido ainda, checamos se deve ser removido 
+                    // se o atual não foi removido ainda, checamos se deve ser removido
                     // a função comparar_remover retorna 1 caso o registro "atual" seja removido
                     if (atual->removido != '1') {
                         qtdRem += comparar_remover(busca, atual, fbin, cab, array, tamArray);
@@ -293,7 +293,7 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
                     desalocar_struct(&atual);
                 }
                 desalocar_necessario(busca);
-                //atualizando a quantidade de registros removidos e não removidos
+                // atualizando a quantidade de registros removidos e não removidos
                 cab->nroRegArq -= qtdRem;
                 cab->nroRegRem += qtdRem;
 
@@ -309,7 +309,7 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
     fseek(fbin, 0, SEEK_SET);
     escrever_cabecalho(fbin, cab);
 
-    // reescrever arquivo de índice com a lista encadeada atualizada pós remoções 
+    // reescrever arquivo de índice com a lista encadeada atualizada pós remoções
     LISTA *reg = passar_vetor_indice(array, tamArray);
     status = '1';
     escrever_arquivo_indice(findex, reg, status);
@@ -324,6 +324,7 @@ void DELETE(char *nomeArquivoBinario, char *nomeArquivoIndice) {
     fclose(fbin);
     fclose(findex);
 
-    binarioNaTela(nomeArquivoBinario);
-    binarioNaTela(nomeArquivoIndice);
+    // COMENTANDO AQUI POR CAUSA DO TRABALHO DE POO
+    // binarioNaTela(nomeArquivoBinario);
+    // binarioNaTela(nomeArquivoIndice);
 }
