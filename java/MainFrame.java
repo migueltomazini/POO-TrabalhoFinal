@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,6 +24,14 @@ public class MainFrame extends JFrame {
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Adicionar WindowListener para fechar o socket quando a janela for fechada
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeClient();
+            }
+        });
+
         JMenuBar menuBar = new JMenuBar();
         menuBar.setFont(defaultFont);
 
@@ -43,7 +50,7 @@ public class MainFrame extends JFrame {
                         PrintStream out = new PrintStream(client.getOutputStream());
 
                         String query = "Carregar: " + file;
-                        out.println(query);
+                        out.print(query);
                     } catch (IOException ex) {
                         Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (Exception err) {
@@ -71,7 +78,7 @@ public class MainFrame extends JFrame {
                         BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
                         String query = "2 " + file;
-                        out.println(query);
+                        out.print(query);
 
                         String response;
                         while (!(response = in.readLine()).equals("")) {
@@ -120,7 +127,18 @@ public class MainFrame extends JFrame {
 
     private void initClient() {
         try {
-            client = new Socket("127.0.0.1", 65432);
+            client = new Socket("127.0.0.1", 11111);
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void closeClient() {
+        try {
+            if (client != null && !client.isClosed()) {
+                client.close();
+                System.out.println("Client socket closed.");
+            }
         } catch (IOException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -233,10 +233,6 @@ int CREATE_INDEX(char *nomeArquivoBinario, char *nomeArquivoIndice) {
             // manualmente, assim tamReg é o tamanho que de fato eu utilizei para o registro atual
             // e tamanhoRegistro é o espaço que ele está ocupando (devido a reutilização de espaço por exemplo)
             // devemos pular a diferença desses tamanhos em relação ao local apontado atualmente
-            
-            // int tamReg = 33 + atual->tamNacionalidade + atual->tamNomeClube + atual->tamNomeJog;
-            // if (atual->tamanhoRegistro != tamReg)
-            //     fseek(fbin, atual->tamanhoRegistro - tamReg, SEEK_CUR);
 
             desalocar_struct(&atual);
         }

@@ -130,7 +130,7 @@ public class SearchPanel extends JPanel {
             if (!club.isEmpty())
                 query += "nomeClube \"" + club + "\" ";
 
-            out.println(query);
+            out.print(query);
 
             listModel.clear();
             String response;
