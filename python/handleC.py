@@ -16,7 +16,7 @@ def check_os():
     platform_system = platform.system()
     print(os_name, platform_system)
 
-    if os_name == 'posix' or platform_system.split('_')[0] == 'CYGWIN':
+    if os_name == 'posix' and platform_system.split('_')[0] == 'CYGWIN':
         return 'Windows'
     elif os_name == 'posix' and platform_system == 'Linux':
         return 'Linux'
