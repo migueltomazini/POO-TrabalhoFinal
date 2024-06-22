@@ -22,15 +22,46 @@ def check_os():
         return 'Linux'
     else:
         return 'Unknown'
+    
+
+def run_make_commands(directory):
+    # Run `make clean`
+    process_clean = subprocess.run(
+        ["make", "clean"],
+        cwd=directory,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+    # Check for errors in `make clean`
+    if process_clean.returncode != 0:
+        raise Exception(f"Error running 'make clean': {process_clean.stderr}")
+        return
+
+    # Run `make all`
+    process_all = subprocess.run(
+        ["make", "all"],
+        cwd=directory,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+
+    # Check for errors in `make all`
+    if process_all.returncode != 0:
+        raise Exception(f"Error running 'make all': {process_all.stderr}")
+        return
+
 
 def run_c_program(input_data, id_client):
     current_os = check_os()
     work_dir = os.path.join(".", str(id_client))
     
     if current_os == 'Windows':
-        executable_path = "../../arquivos/bin/windows/programaTrab.exe"
+        executable_path = "../../arquivos/bin/programaTrab.exe"
     elif current_os == 'Linux':
-        executable_path = "../../arquivos/bin/linux/programaTrab"
+        executable_path = "../../arquivos/bin/programaTrab"
     else:
         raise Exception("Unsupported Operating System")
     

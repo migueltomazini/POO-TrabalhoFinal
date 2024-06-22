@@ -7,6 +7,7 @@ import os
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 11111  # Port to listen on (non-privileged ports are > 1023)
 
+
 def handle_client(conn, addr):
     print(f"Connected by {addr}")
     try:
@@ -24,20 +25,26 @@ def handle_client(conn, addr):
             # Carregar fifa2017.bin
             if (string.split(" ")[0] == "Carregar:"):
                 orig = "./arquivos/" + string.split(" ")[1]
-                
+
                 os.makedirs("./" + str(addr[1]), exist_ok=True)
                 dest = "./" + str(addr[1]) + "/" + string.split(" ")[1]
-                
+
                 shutil.copyfile(orig, dest)
+
+                handleC.run_make_commands('../arquivos')
             else:
                 for command in string.split("/"):
                     output = handleC.run_c_program(command, addr[1])
                 if output:
                     conn.sendall(output.encode("utf-8"))
+        
+        # apagar o diretório criado anteriormente
+        shutil.rmtree('./' + str(addr[1]))
     except Exception as e:
         print(f"Exception occurred: {e}")
     finally:
         conn.close()
+
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
