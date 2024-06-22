@@ -14,8 +14,9 @@ import platform
 def check_os():
     os_name = os.name
     platform_system = platform.system()
+    print(os_name, platform_system)
 
-    if os_name == 'nt' or platform_system == 'Windows':
+    if os_name == 'posix' or platform_system.split('_')[0] == 'CYGWIN':
         return 'Windows'
     elif os_name == 'posix' and platform_system == 'Linux':
         return 'Linux'
@@ -27,7 +28,7 @@ def run_c_program(input_data, id_client):
     work_dir = os.path.join(".", str(id_client))
     
     if current_os == 'Windows':
-        executable_path = r"..\arquivos\bin\windows\programaTrab.exe"
+        executable_path = "../../arquivos/bin/windows/programaTrab.exe"
     elif current_os == 'Linux':
         executable_path = "../../arquivos/bin/linux/programaTrab"
     else:
