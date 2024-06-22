@@ -19,8 +19,9 @@ def handle_client(conn, addr):
 
             # decodificar os dados recebidos para utf-8
             string = data.decode("utf-8")
-            print("input: ", string)
+            print("input: ", repr(string))
 
+            # Carregar fifa2017.bin
             if (string.split(" ")[0] == "Carregar:"):
                 orig = "./arquivos/" + string.split(" ")[1]
                 

@@ -104,7 +104,7 @@ public class SearchPanel extends JPanel {
             PrintStream out = new PrintStream(client.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
-            String query = "3 " + fileToEdit + " 1\n";
+            String query = "3 " + fileToEdit + "1\n";
             int ct = 0;
             if (id != -1)
                 ct++;
