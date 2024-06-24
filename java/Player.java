@@ -1,12 +1,14 @@
 import java.io.Serializable;
 
 public class Player implements Serializable {
+    // Campos privados para armazenar os detalhes do jogador
     private int id;
     private int age;
     private String name;
     private String nationality;
     private String club;
 
+    // Construtor para inicializar todos os campos
     public Player(int id, int age, String name, String nationality, String club) {
         this.id = id;
         this.age = age;
@@ -15,6 +17,7 @@ public class Player implements Serializable {
         this.club = club;
     }
 
+    // Métodos getter e setter para o campo 'id'
     public int getId() {
         return id;
     }
@@ -23,6 +26,7 @@ public class Player implements Serializable {
         this.id = id;
     }
 
+    // Métodos getter e setter para o campo 'age'
     public int getAge() {
         return age;
     }
@@ -31,6 +35,7 @@ public class Player implements Serializable {
         this.age = age;
     }
 
+    // Métodos getter e setter para o campo 'name'
     public String getName() {
         return name;
     }
@@ -39,6 +44,7 @@ public class Player implements Serializable {
         this.name = name;
     }
 
+    // Métodos getter e setter para o campo 'nationality'
     public String getNationality() {
         return nationality;
     }
@@ -47,6 +53,7 @@ public class Player implements Serializable {
         this.nationality = nationality;
     }
 
+    // Métodos getter e setter para o campo 'club'
     public String getClub() {
         return club;
     }
@@ -55,6 +62,7 @@ public class Player implements Serializable {
         this.club = club;
     }
 
+    // Método toString para retornar uma representação textual do objeto Player
     @Override
     public String toString() {
         return "Player{" +
