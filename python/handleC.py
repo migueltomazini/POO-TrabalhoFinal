@@ -4,14 +4,16 @@
 # remoção e inserção no arquivo
 # listagem de todos os jogadores
 
-# em resumo:
-# inserção, remoção, listagem, busca
-
 import subprocess
 import os
 import platform
 
 def check_os():
+    """
+    Verifica o sistema operacional atual.
+    Retorna 'Windows' se o SO for Windows, 'Linux' se for Linux, 
+    e 'Unknown' para outros sistemas.
+    """
     os_name = os.name
     platform_system = platform.system()
     print(os_name, platform_system)
@@ -25,7 +27,11 @@ def check_os():
     
 
 def run_make_commands(directory):
-    # Run `make clean`
+    """
+    Executa os comandos 'make clean' e 'make all' no diretório especificado.
+    Lança uma exceção se ocorrer um erro em qualquer um dos comandos.
+    """
+    # Executa o comando `make clean
     process_clean = subprocess.run(
         ["make", "clean"],
         cwd=directory,
@@ -34,12 +40,12 @@ def run_make_commands(directory):
         text=True
     )
 
-    # Check for errors in `make clean`
+    # Verifica se houve erro ao executar `make clean`
     if process_clean.returncode != 0:
         raise Exception(f"Error running 'make clean': {process_clean.stderr}")
         return
 
-    # Run `make all`
+    # Executa o comando `make all`
     process_all = subprocess.run(
         ["make", "all"],
         cwd=directory,
@@ -48,13 +54,18 @@ def run_make_commands(directory):
         text=True
     )
 
-    # Check for errors in `make all`
+    # Verifica se houve erro ao executar `make all`
     if process_all.returncode != 0:
         raise Exception(f"Error running 'make all': {process_all.stderr}")
         return
 
 
 def run_c_program(input_data, id_client):
+    """
+    Executa um programa C com os dados de entrada fornecidos.
+    Determina o sistema operacional atual e executa o programa C 
+    correspondente. Retorna a saída do programa ou imprime erros, se houver.
+    """
     current_os = check_os()
     work_dir = os.path.join(".", str(id_client))
     
@@ -66,19 +77,19 @@ def run_c_program(input_data, id_client):
         raise Exception("Unsupported Operating System")
     
     process = subprocess.Popen(
-        executable_path,  # Adjust the path to your compiled C program
-        stdin=subprocess.PIPE,  # Set stdin to a pipe to communicate with the process
-        stdout=subprocess.PIPE,  # Capture the output of the process
-        stderr=subprocess.PIPE,  # Capture any error messages
-        text=True,  # Use text mode for communication
+        executable_path,  # Caminho para o programa C compilado
+        stdin=subprocess.PIPE,  # Define stdin como pipe para comunicação com o processo
+        stdout=subprocess.PIPE,  # Captura a saída do processo
+        stderr=subprocess.PIPE,  # Captura mensagens de erro
+        text=True,  # Usa modo texto para comunicação
         cwd=work_dir
     )
     
-    # Provide input to the subprocess
+    # Fornece dados de entrada para o subprocesso
     stdout, stderr = process.communicate(input_data)
     print(stdout)
 
-    # Check for errors
+     # Verifica se houve erros
     if process.returncode != 0:
         print("Error:", stderr)
     else:    
